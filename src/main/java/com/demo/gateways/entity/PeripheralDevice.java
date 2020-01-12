@@ -16,7 +16,8 @@ public class PeripheralDevice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    Long uuid;
+    @Column(unique = true)
+    Long uid;
 
     String vendor;
 

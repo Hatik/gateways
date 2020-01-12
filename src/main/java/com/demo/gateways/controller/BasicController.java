@@ -1,11 +1,13 @@
 package com.demo.gateways.controller;
 
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 
 public interface BasicController<T> {
     List<T> getAll();
-    T getById(Long id);
-    T update (T item);
-    T add (T item);
-    boolean deleteById(Long id);
+    ResponseEntity getById(Long id);
+    ResponseEntity update (T item);
+    ResponseEntity add (T item);
+    ResponseEntity deleteById(Long id);
 }
