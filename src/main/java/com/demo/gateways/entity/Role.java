@@ -1,6 +1,7 @@
 package com.demo.gateways.entity;
 
 
+import com.demo.gateways.model.RoleDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,5 +23,10 @@ public class Role {
 
     String name;
 
-
+    public RoleDto asModel() {
+        return RoleDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .build();
+    }
 }

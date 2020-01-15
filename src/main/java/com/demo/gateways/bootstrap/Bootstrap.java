@@ -37,7 +37,7 @@ public class Bootstrap implements CommandLineRunner {
                 .email("w.askhat.serikov@gmail.com")
                 .password(BCryptSingleton.getInstance().encode("123"))
                 .active(1)
-                .roles(new HashSet<>(Arrays.asList(roleAdmin, roleUser))).build();
+                .roles(Arrays.asList(roleAdmin, roleUser)).build();
 
         userRepository.save(user);
     }
