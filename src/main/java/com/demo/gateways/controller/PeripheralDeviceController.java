@@ -6,9 +6,9 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -18,12 +18,18 @@ public class PeripheralDeviceController implements BasicController<PeripheralDev
     @Autowired
     PeripheralDeviceService deviceService;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     @GetMapping
-    public List<PeripheralDevice> getAll() {
-        return deviceService.getAll();
+    public ResponseEntity getAll() {
+        try {
+            return ResponseEntity.ok(deviceService.getAll());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Long id) {
@@ -42,6 +48,7 @@ public class PeripheralDeviceController implements BasicController<PeripheralDev
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     @PostMapping
     public ResponseEntity add(@RequestBody PeripheralDevice item) {
@@ -52,6 +59,7 @@ public class PeripheralDeviceController implements BasicController<PeripheralDev
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @Override
     public ResponseEntity deleteById(@PathVariable Long id) {

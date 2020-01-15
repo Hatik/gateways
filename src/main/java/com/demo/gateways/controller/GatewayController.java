@@ -12,26 +12,33 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("api/gateway")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GatewayController implements BasicController<Gateway> {
+    //TODO add Security
     @Autowired
     GatewayService gatewayService;
     @Autowired
     PeripheralDeviceService peripheralDeviceService;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     @Override
-    public List<Gateway> getAll() {
-        return gatewayService.getAll();
+    public ResponseEntity getAll() {
+        try {
+            return ResponseEntity.ok(gatewayService.getAll());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
     @Override
     public ResponseEntity getById(@PathVariable Long id) {
@@ -40,6 +47,7 @@ public class GatewayController implements BasicController<Gateway> {
         return ResponseEntity.notFound().build();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     @Override
     public ResponseEntity add(@RequestBody Gateway item) {
@@ -57,6 +65,7 @@ public class GatewayController implements BasicController<Gateway> {
         return ResponseEntity.notFound().build();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping
     @Override
     public ResponseEntity update(@RequestBody Gateway item) {
@@ -67,6 +76,7 @@ public class GatewayController implements BasicController<Gateway> {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @Override
     public ResponseEntity deleteById(@PathVariable Long id) {
@@ -78,6 +88,7 @@ public class GatewayController implements BasicController<Gateway> {
         }
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{id}/addPeripheralDevice")
     public ResponseEntity addPeripheralDevice(@PathVariable Long id, @RequestBody PeripheralDevice device) {
         try {
